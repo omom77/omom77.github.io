@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Om Sakharkar — Robotics & Autonomy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-deep:    #0f2044;
+      --blue-mid:     #1a3a6e;
+      --blue-bright:  #2563c8;
+      --blue-soft:    #4a80d4;
+      --blue-tint:    #dce9fb;
+      --blue-pale:    #f0f5ff;
+      --pink-accent:  #fce8ee;
+      --pink-mid:     #f4b8ca;
+      --pink-strong:  #e87fa0;
+      --white:        #ffffff;
+      --text-dark:    #0f1b30;
+      --text-mid:     #3a4f6e;
+      --text-light:   #7a90b0;
+      --border:       #d0ddf0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background: var(--blue-pale);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15,32,68,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 60px;
+    }
+    .nav-logo {
+      
+      color: var(--white); font-size: 1.1rem; letter-spacing: 0.04em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.65); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--pink-mid); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(145deg, var(--blue-deep) 0%, var(--blue-mid) 60%, #1e4a8a 100%);
+      display: flex; align-items: center;
+      padding: 100px 3rem 3rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 600px 500px at 80% 50%, rgba(37,99,200,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 300px at 10% 80%, rgba(232,127,160,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      max-width: 1100px; margin: 0 auto; width: 100%;
+      position: relative; z-index: 1;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(244,184,202,0.15);
+      border: 1px solid rgba(244,184,202,0.4);
+      color: var(--pink-mid);
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.35rem 0.9rem;
+       margin-bottom: 1.2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero h1 {
+      font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      color: var(--white); line-height: 1.1;
+      margin-bottom: 1rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--pink-mid);
+    }
+    .hero-sub {
+      color: rgba(255,255,255,0.65); font-size: 1rem; font-weight: 400;
+      max-width: 440px; margin-bottom: 2rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-links {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .hero-links a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.55rem 1.2rem; 
+      font-size: 0.82rem; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .btn-primary {
+      background: var(--blue-bright); color: var(--white);
+      border: 1px solid var(--blue-bright);
+    }
+    .btn-primary:hover { background: var(--blue-soft); border-color: var(--blue-soft); }
+    .btn-ghost {
+      background: transparent; color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .btn-ghost:hover { border-color: var(--pink-mid); color: var(--pink-mid); }
+
+    /* hero right — decorative card */
+    .hero-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+       padding: 2rem;
+      backdrop-filter: blur(8px);
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-card-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pink-mid); margin-bottom: 1.2rem;
+    }
+    .skill-pill {
+      display: inline-block; margin: 0.3rem 0.2rem;
+      padding: 0.3rem 0.8rem; 
+      font-size: 0.78rem; font-weight: 500;
+    }
+    .pill-blue { background: rgba(37,99,200,0.25); color: #93b8f5; border: 1px solid rgba(74,128,212,0.35); }
+    .pill-pink { background: rgba(232,127,160,0.18); color: var(--pink-mid); border: 1px solid rgba(244,184,202,0.35); }
+    .stat-row {
+      display: flex; gap: 1.5rem; margin-top: 1.6rem;
+      border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.4rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {  font-size: 1.8rem; color: var(--white); }
+    .stat-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 6rem 3rem; }
+    .section-inner { max-width: 1000px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--blue-bright); margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--blue-deep); margin-bottom: 0.5rem; line-height: 1.2;
+    }
+    .section-line {
+      width: 40px; height: 3px;
+      background: linear-gradient(90deg, var(--pink-strong), var(--blue-bright));
+       margin-bottom: 3rem;
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--white); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .skill-card {
+      background: var(--blue-pale);
+      border: 1px solid var(--border);
+       padding: 1.6rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { box-shadow: 0 8px 32px rgba(37,99,200,0.12); transform: translateY(-2px); }
+    .skill-card-icon {
+      width: 40px; height: 40px; 
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: 1rem;
+    }
+    .icon-blue { background: var(--blue-tint); }
+    .icon-pink { background: var(--pink-accent); }
+    .skill-card h3 {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--blue-deep); margin-bottom: 0.6rem;
+    }
+    .skill-card p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.7; }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--blue-pale); }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--blue-bright), var(--pink-mid));
+      
+    }
+    .exp-item {
+      display: grid; grid-template-columns: 48px 1fr;
+      gap: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .exp-dot {
+      width: 32px; height: 32px; 
+      background: var(--blue-bright); border: 3px solid var(--blue-pale);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: white; font-weight: 700;
+      position: relative; z-index: 1; flex-shrink: 0;
+    }
+    .exp-card {
+      background: var(--white); border: 1px solid var(--border);
+       padding: 1.8rem;
+      transition: box-shadow 0.2s;
+    }
+    .exp-card:hover { box-shadow: 0 6px 24px rgba(37,99,200,0.1); }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem; }
+    .exp-role {  font-size: 1.15rem; color: var(--blue-deep); }
+    .exp-date {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.07em;
+      color: var(--white); background: var(--blue-bright);
+      padding: 0.25rem 0.75rem; 
+    }
+    .exp-company { font-size: 0.85rem; color: var(--blue-soft); font-weight: 600; margin-bottom: 1rem; }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      font-size: 0.88rem; color: var(--text-mid); line-height: 1.7;
+      padding: 0.25rem 0 0.25rem 1.2rem; position: relative;
+    }
+    .exp-bullets li::before {
+      content: ''; position: absolute; left: 0; top: 0.75rem;
+      width: 6px; height: 6px; 
+      background: var(--pink-strong);
+    }
+    .exp-bullets strong { color: var(--blue-deep); font-weight: 600; }
+
+    /* ── PHOTO BREAK ── */
+    .photo-break {
+      background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
+      padding: 5rem 3rem;
+      position: relative; overflow: hidden;
+    }
+    .photo-break::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 500px 400px at 60% 50%, rgba(37,99,200,0.3), transparent 70%);
+    }
+    .photo-break-inner {
+      max-width: 1000px; margin: 0 auto;
+      display: flex; align-items: center; gap: 4rem;
+      position: relative; z-index: 1;
+    }
+    .photo-frame {
+      flex-shrink: 0;
+      width: 240px; height: 280px;
+       overflow: hidden;
+      border: 3px solid rgba(244,184,202,0.4);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.75rem;
+      background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+    }
+    .photo-icon {
+      width: 72px; height: 72px; 
+      background: rgba(244,184,202,0.15);
+      border: 2px dashed rgba(244,184,202,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    .photo-placeholder span {
+      font-size: 0.78rem; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    /* To use a real photo: replace .photo-placeholder with <img src="your-photo.jpg"> */
+    .photo-text h2 {
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--white);
+      line-height: 1.25; margin-bottom: 1rem;
+    }
+    .photo-text h2 em { font-style: italic; color: var(--pink-mid); }
+    .photo-text p { color: rgba(255,255,255,0.65); font-size: 0.95rem; max-width: 480px; line-height: 1.8; }
+    .photo-text-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .photo-tag {
+      padding: 0.3rem 0.85rem;  font-size: 0.78rem; font-weight: 500;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--white); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 1.8rem; }
+    .proj-card {
+      border: 1px solid var(--border); 
+      overflow: hidden; transition: box-shadow 0.25s, transform 0.25s;
+      background: var(--blue-pale);
+    }
+    .proj-card:hover { box-shadow: 0 10px 40px rgba(37,99,200,0.15); transform: translateY(-3px); }
+    .proj-banner {
+      height: 8px;
+      background: linear-gradient(90deg, var(--blue-bright), var(--pink-strong));
+    }
+    .proj-body { padding: 1.8rem; }
+    .proj-title {  font-size: 1.25rem; color: var(--blue-deep); margin-bottom: 0.5rem; }
+    .proj-stack {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem;
+    }
+    .proj-tech {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; 
+      background: var(--blue-tint); color: var(--blue-bright);
+    }
+    .proj-tech.pink { background: var(--pink-accent); color: var(--pink-strong); }
+    .proj-bullets { list-style: none; }
+    .proj-bullets li {
+      font-size: 0.87rem; color: var(--text-mid); padding: 0.2rem 0 0.2rem 1.1rem; position: relative; line-height: 1.7;
+    }
+    .proj-bullets li::before {
+      content: '→'; position: absolute; left: 0; color: var(--blue-bright); font-size: 0.75rem; top: 0.3rem;
+    }
+    .proj-bullets strong { color: var(--blue-deep); font-weight: 600; }
+
+    /* ── CERTS & AWARDS ── */
+    #more { background: var(--blue-pale); }
+    .more-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .more-card {
+      background: var(--white); border: 1px solid var(--border);
+       padding: 1.8rem;
+    }
+    .more-card-head {
+       font-size: 1.1rem; color: var(--blue-deep);
+      margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem;
+    }
+    .more-icon {
+      width: 32px; height: 32px;  flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .more-list { list-style: none; }
+    .more-list li {
+      font-size: 0.87rem; color: var(--text-mid); padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border); line-height: 1.6;
+    }
+    .more-list li:last-child { border-bottom: none; }
+    .more-list strong { color: var(--blue-deep); display: block; font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--blue-deep); padding: 3rem;
+      text-align: center;
+    }
+    footer .footer-name {
+      font-weight: 700; font-size: 1.5rem;
+      color: var(--white); margin-bottom: 0.5rem;
+    }
+    footer p { color: rgba(255,255,255,0.4); font-size: 0.83rem; }
+    footer .footer-links { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; list-style: none; }
+    footer .footer-links a {
+      color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    footer .footer-links a:hover { color: var(--pink-mid); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 90px 1.5rem 3rem; }
+      .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .more-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .photo-break-inner { flex-direction: column; gap: 2rem; }
+      .photo-break { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Om Sakharkar</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#more">More</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#0576646e6d64776e64776a68323232456268646c692b666a68">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">Robotics &amp; Autonomy Engineer</div>
+      <h1>Building the<br>robots of<br><em>tomorrow.</em></h1>
+      <p class="hero-sub">B.Tech ECE graduate specialising in autonomous navigation, simulation, and AI-driven robotics systems.</p>
+      <div class="hero-links">
+        <a class="btn-primary" href="/cdn-cgi/l/email-protection#e794868c8f86958c8695888ad0d0d0a7808a868e8bc984888a">Get in touch</a>
+        <a class="btn-ghost" href="https://www.linkedin.com/in/om" target="_blank">LinkedIn</a>
+        <a class="btn-ghost" href="https://github.com/om" target="_blank">GitHub</a>
+        <a class="btn-ghost" href="https://www.behance.net/omsakharkar" target="_blank">Portfolio</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">Core Expertise</div>
+      <div>
+        <span class="skill-pill pill-blue">ROS2</span>
+        <span class="skill-pill pill-blue">Nav2</span>
+        <span class="skill-pill pill-blue">SLAM</span>
+        <span class="skill-pill pill-pink">Gaussian Splatting</span>
+        <span class="skill-pill pill-blue">NVIDIA Isaac Sim</span>
+        <span class="skill-pill pill-blue">Python</span>
+        <span class="skill-pill pill-blue">C++</span>
+        <span class="skill-pill pill-pink">YOLOv8</span>
+        <span class="skill-pill pill-blue">Sensor Fusion</span>
+        <span class="skill-pill pill-blue">OpenCV</span>
+        <span class="skill-pill pill-pink">Docker</span>
+        <span class="skill-pill pill-blue">Path Planning</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num">8.89</div>
+          <div class="stat-lbl">CGPA</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">70%</div>
+          <div class="stat-lbl">Sim-to-Real Gap↓</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">&lt;1hr</div>
+          <div class="stat-lbl">Pipeline (was days)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">What I bring</div>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-line"></div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-card-icon icon-blue">🤖</div>
+        <h3>Robotics &amp; Autonomy</h3>
+        <p>ROS2, Nav2, SLAM, Path Planning, Sensor Fusion — building end-to-end autonomous robot systems from perception to motion.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon icon-pink">🌐</div>
+        <h3>Simulation</h3>
+        <p>NVIDIA Isaac Sim, Omniverse — creating high-fidelity digital twins and synthetic data pipelines to accelerate real-world deployment.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon icon-blue">💻</div>
+        <h3>Programming</h3>
+        <p>Python, C++, JavaScript — writing clean, performant code for robotics middleware, control systems, and web interfaces.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon icon-pink">👁️</div>
+        <h3>Perception &amp; Computer Vision</h3>
+        <p>Object Detection, Image Processing, OpenCV, YOLOv8 — equipping robots with real-time visual understanding of their environment.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon icon-blue">🛠️</div>
+        <h3>Tools &amp; Infrastructure</h3>
+        <p>Docker, Git, MATLAB, Simulink — maintaining robust dev workflows and reproducible simulation environments at scale.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon icon-pink">🎓</div>
+        <h3>Education</h3>
+        <p>B.Tech Electrical &amp; Computer Engineering — MIT World Peace University, Pune. CGPA 8.89. Graduated May 2025.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">Where I've worked</div>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+    <div class="timeline">
+
+      <div class="exp-item reveal">
+        <div class="exp-dot">K</div>
+        <div class="exp-card">
+          <div class="exp-header">
+            <div class="exp-role">Graduate Engineer Trainee – Advanced Core Robotics</div>
+            <span class="exp-date">Mar 2025 – Present</span>
+          </div>
+          <div class="exp-company">Kion India Pvt. Ltd. · Pune, MH</div>
+          <ul class="exp-bullets">
+            <li>Engineered autonomous navigation robot prototypes using <strong>ROS2</strong> and <strong>Nav2</strong>, accelerating validation cycles and improving testing throughput.</li>
+            <li>Architected a <strong>Gaussian Splatting-based synthetic data pipeline</strong>, reducing sim-to-real gap by <strong>70%</strong> compared to CAD-based assets for vision model training.</li>
+            <li>Optimised data generation workflows, cutting pipeline execution time from <strong>multiple days to under 1 hour</strong>.</li>
+            <li>Evaluated and integrated sensor fusion strategies to improve 3D reconstruction fidelity in digital twin environments.</li>
+            <li>Established simulation-first testing using digital twins, minimising physical trials and accelerating iteration cycles.</li>
+            <li>Communicated technical progress to executive leadership, enabling faster alignment on robotics initiatives.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-dot">K</div>
+        <div class="exp-card">
+          <div class="exp-header">
+            <div class="exp-role">Intern – AI &amp; Robotics</div>
+            <span class="exp-date">Jan 2025 – Jul 2025</span>
+          </div>
+          <div class="exp-company">Kion India Pvt. Ltd. · Pune, MH</div>
+          <ul class="exp-bullets">
+            <li>Simulated autonomous robotic systems using <strong>NVIDIA Isaac Sim</strong> and <strong>ROS2</strong>, enabling rapid prototyping without hardware constraints.</li>
+            <li>Implemented <strong>trajectory planning</strong> and <strong>Nav2-based navigation</strong>, improving path efficiency and system robustness.</li>
+            <li>Combined <strong>SLAM and perception pipelines</strong> for real-time mapping and obstacle avoidance in dynamic environments.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO BREAK -->
+<div class="photo-break">
+  <div class="photo-break-inner">
+    <div class="photo-frame">
+      <!-- Replace contents with <img src="photo.jpg" style="width:100%;height:100%;object-fit:cover"> -->
+      <div class="photo-placeholder">
+        <div class="photo-icon">👤</div>
+        <span>Add your photo</span>
+        <span style="font-size:0.68rem;color:rgba(255,255,255,0.25);">Replace placeholder in HTML</span>
+      </div>
+    </div>
+    <div class="photo-text">
+      <h2>Driven by <em>curiosity,</em><br>grounded in engineering.</h2>
+      <p>I'm a robotics engineer who loves the full stack — from low-level sensor fusion and SLAM to high-level autonomy architectures and digital twin pipelines. I thrive at the intersection of simulation and real-world deployment.</p>
+      <div class="photo-text-tags">
+        <span class="photo-tag">Pune, India</span>
+        <span class="photo-tag">Open to Relocation</span>
+        <span class="photo-tag">+91 8828355035</span>
+        <span class="photo-tag"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="93e0f2f8fbf2e1f8f2e1fcfea4a4a4d3f4fef2faffbdf0fcfe">[email&#160;protected]</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">What I've built</div>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+    <div class="projects-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-banner"></div>
+        <div class="proj-body">
+          <div class="proj-title">Navros – Autonomous Mobile Robot</div>
+          <div class="proj-stack">
+            <span class="proj-tech">ROS2</span>
+            <span class="proj-tech">Python</span>
+            <span class="proj-tech">OpenCV</span>
+            <span class="proj-tech">ESP32</span>
+            <span class="proj-tech pink">Gazebo</span>
+            <span class="proj-tech pink">RViz</span>
+          </div>
+          <ul class="proj-bullets">
+            <li>Implemented a <strong>ROS2-based autonomous navigation system</strong> with real-time obstacle detection for dynamic environments.</li>
+            <li>Streamlined development by integrating simulation and hardware, reducing iteration time by <strong>~50%</strong>.</li>
+            <li>Fabricated a custom 3D-printed chassis, improving mechanical stability and deployment readiness.</li>
+            <li>Engineered a real-time vision module for obstacle detection, enhancing navigation safety.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-banner" style="background: linear-gradient(90deg, var(--pink-strong), var(--blue-bright));"></div>
+        <div class="proj-body">
+          <div class="proj-title">Parrot – 3D Printing Automation System</div>
+          <div class="proj-stack">
+            <span class="proj-tech">ROS2</span>
+            <span class="proj-tech">C++</span>
+            <span class="proj-tech">Python</span>
+            <span class="proj-tech pink">YOLOv8</span>
+            <span class="proj-tech">ESP32</span>
+            <span class="proj-tech pink">React</span>
+            <span class="proj-tech">OctoPrint</span>
+          </div>
+          <ul class="proj-bullets">
+            <li>Built an <strong>end-to-end automation pipeline</strong> for 3D printing, reducing manual intervention and operational overhead.</li>
+            <li>Implemented a <strong>YOLOv8-based failure detection system</strong>, minimising material waste and failed print cycles.</li>
+            <li>Reduced 3D printing downtime by <strong>multiple hours</strong> through automated failure detection and robotic removal.</li>
+            <li>Created a web-based monitoring interface for remote control and real-time system visibility.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTS & AWARDS -->
+<section id="more">
+  <div class="section-inner">
+    <div class="section-label">Credentials &amp; recognition</div>
+    <h2 class="section-title">Certifications &amp; Awards</h2>
+    <div class="section-line"></div>
+    <div class="more-grid">
+      <div class="more-card reveal">
+        <div class="more-card-head">
+          <div class="more-icon icon-blue" style="background:var(--blue-tint)">📜</div>
+          Certifications
+        </div>
+        <ul class="more-list">
+          <li>
+            <strong>ROS2 for Beginners Level 2</strong>
+            TF, URDF, RViz, Gazebo — Udemy
+          </li>
+          <li>
+            <strong>Robotics and ROS2 – Learn by Doing</strong>
+            Manipulators — Udemy
+          </li>
+        </ul>
+      </div>
+      <div class="more-card reveal">
+        <div class="more-card-head">
+          <div class="more-icon icon-pink" style="background:var(--pink-accent)">🏆</div>
+          Awards
+        </div>
+        <ul class="more-list">
+          <li>
+            <strong>Hack MIT-WPU — 3rd Place &nbsp;·&nbsp; Mar 2023</strong>
+            Proposed an active front wing diffuser concept to improve race car aerodynamics. Pune, MH.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Om Sakharkar</div>
+  <p>Robotics &amp; Autonomy Engineer · Pune, India</p>
+  <ul class="footer-links">
+    <li><a href="/cdn-cgi/l/email-protection#acdfcdc7c4cddec7cddec3c19b9b9beccbc1cdc5c082cfc3c1">Email</a></li>
+    <li><a href="https://www.linkedin.com/in/om" target="_blank">LinkedIn</a></li>
+    <li><a href="https://github.com/om" target="_blank">GitHub</a></li>
+    <li><a href="https://www.behance.net/omsakharkar" target="_blank">Portfolio</a></li>
+  </ul>
+</footer>
+
+<script data-cfasync="false" src="/cdn
